@@ -1,53 +1,59 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #fdf6f9;
+:root{
+  --accent:#0b67d1;
+  --pink:#ff6f9c;
+  --bg:#fff;
+  --muted:#6b7280;
 }
-header {
-    background: #3b3b98;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-.product {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.product img {
-    max-width: 100%;
-    border-radius: 10px;
-}
-button {
-    background: #3b3b98;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-#cart {
-    position: fixed;
-    top: 0;
-    right: -400px;
-    width: 300px;
-    height: 100%;
-    background: white;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
-    padding: 20px;
-    transition: right 0.3s;
-}
-#cart.show {
-    right: 0;
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:#111}
+.site-header .top{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px}
+.titles h1{margin:0;font-size:20px}
+.titles .tag{margin:0;color:var(--muted);font-size:13px}
+.actions{display:flex;align-items:center;gap:10px}
+#search{padding:10px 12px;border-radius:12px;border:1px solid #e5e7eb;min-width:220px}
+.cart-btn{background:transparent;border:1px solid #e5e7eb;padding:8px 10px;border-radius:10px;cursor:pointer}
+
+.main-nav{background:#0f1724}
+.main-nav ul{display:flex;list-style:none;margin:0;padding:8px 18px;gap:8px}
+.main-nav li{color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+.main-nav li.active, .main-nav li:hover{background:rgba(255,255,255,0.06)}
+
+.hero{display:flex;gap:24px;align-items:center;padding:28px 24px;background:linear-gradient(90deg,#f8fbff,#eef6ff)}
+.hero-text{flex:1}
+.hero-text h2{margin:0 0 8px 0;font-size:28px}
+.hero-text p{color:var(--muted);margin:0 0 12px 0}
+.btn-primary{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;border:none;cursor:pointer}
+
+.hero-img img{width:320px;border-radius:12px;display:block;box-shadow:0 10px 30px rgba(11,103,209,0.12)}
+
+/* offers */
+.offers{padding:18px 24px}
+.offers h3{margin:0 0 12px 0}
+.offers-row{display:flex;gap:12px;overflow:auto;padding-bottom:6px}
+.offer-card{min-width:180px;background:#fff;border-radius:10px;padding:10px;border:1px solid #eef2ff;box-shadow:0 6px 18px rgba(11,103,209,0.04);text-align:center}
+.offer-card img{width:100%;border-radius:8px}
+
+/* products */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:18px 24px}
+.product{background:#fff;border-radius:12px;padding:12px;border:1px solid #eef2ff;display:flex;flex-direction:column;gap:8px}
+.product img{width:100%;border-radius:8px}
+.product h4{margin:0;font-size:16px}
+.p-meta{display:flex;justify-content:space-between;align-items:center}
+.add-btn{background:var(--pink);color:#fff;padding:8px;border-radius:8px;border:none;cursor:pointer}
+
+/* modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.45);align-items:center;justify-content:center;padding:20px}
+.modal .modal-body{background:#fff;padding:18px;border-radius:12px;max-width:520px;width:100%;position:relative}
+.close{position:absolute;right:12px;top:12px;background:transparent;border:none;font-size:18px;cursor:pointer}
+
+/* footer */
+.site-footer{padding:18px 24px;text-align:center;color:var(--muted);border-top:1px solid #f1f5f9}
+
+/* responsive */
+@media(max-width:800px){
+  .hero{flex-direction:column;align-items:flex-start}
+  .hero-img img{width:100%}
+  .offers-row{gap:10px}
 }

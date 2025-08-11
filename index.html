@@ -1,28 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blue Makeup</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blue Makeup</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Blue Makeup</h1>
-        <div id="cart-icon" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
-    </header>
+  <header class="site-header">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">BM</div>
+        <div class="titles">
+          <h1>Blue Makeup</h1>
+          <p class="tag">Belleza • Calidad • Envío rápido</p>
+        </div>
+      </div>
+      <div class="actions">
+        <input id="search" placeholder="Buscar productos, ej. labial" />
+        <button id="cartBtn" class="cart-btn">🛒 <span id="cartCount">0</span></button>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <ul id="categoryMenu">
+        <li data-cat="all" class="active">Todos</li>
+        <li data-cat="labios">Labios</li>
+        <li data-cat="ojos">Ojos</li>
+        <li data-cat="rostro">Rostro</li>
+        <li data-cat="accesorios">Accesorios</li>
+      </ul>
+    </nav>
+  </header>
 
-    <main>
-        <section class="products" id="products"></section>
-    </main>
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Conoce tus productos favoritos</h2>
+      <p>Ofertas exclusivas y lanzamientos que amarás. Compra seguro y coordina pago por Nequi o transferencia.</p>
+      <a href="#products" class="btn-primary">Ver productos</a>
+    </div>
+    <div class="hero-img"><img src="img/banner.jpg" alt="Banner"></div>
+  </section>
 
-    <aside id="cart">
-        <h2>Tu carrito</h2>
-        <ul id="cart-items"></ul>
-        <p>Total: $<span id="cart-total">0</span></p>
-        <button onclick="checkout()">Finalizar compra</button>
-    </aside>
+  <section class="offers">
+    <h3>Ofertas</h3>
+    <div class="offers-row" id="offersRow"></div>
+  </section>
 
-    <script src="script.js"></script>
+  <main id="products" class="products-grid"></main>
+
+  <!-- Cart modal -->
+  <div id="cartModal" class="modal">
+    <div class="modal-body">
+      <button id="closeCart" class="close">✕</button>
+      <h3>Tu carrito</h3>
+      <ul id="cartItems"></ul>
+      <div class="cart-total">Total: <span id="cartTotal">$0</span></div>
+      <button id="checkout" class="btn-primary">Finalizar compra</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    © Blue Makeup — Contacto: bluemakeup22@gmail.com
+  </footer>
+
+<script src="script.js"></script>
 </body>
 </html>

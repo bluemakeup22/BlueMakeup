@@ -1,55 +1,106 @@
 const products = [
-    {id: 1, name: "Labial Mate", price: 25000, img: "https://via.placeholder.com/200x150.png?text=Labial+Mate"},
-    {id: 2, name: "Rubor en Crema", price: 30000, img: "https://via.placeholder.com/200x150.png?text=Rubor+Crema"},
-    {id: 3, name: "Base Líquida", price: 45000, img: "https://via.placeholder.com/200x150.png?text=Base+Liquida"},
-    {id: 4, name: "Sombras 12 Colores", price: 60000, img: "https://via.placeholder.com/200x150.png?text=Sombras+12"},
-    {id: 5, name: "Delineador Líquido", price: 20000, img: "https://via.placeholder.com/200x150.png?text=Delineador"},
-    {id: 6, name: "Máscara de Pestañas", price: 28000, img: "https://via.placeholder.com/200x150.png?text=Mascara"}
+  {id:1,name:'Labial Rojo',category:'labios',price:25000,img:'img/product1.jpg'},
+  {id:2,name:'Sombras Nude',category:'ojos',price:40000,img:'img/product2.jpg'},
+  {id:3,name:'Rubor Rosado',category:'rostro',price:30000,img:'img/product3.jpg'},
+  {id:4,name:'Brocha Kabuki',category:'accesorios',price:15000,img:'img/product4.jpg'},
+  {id:5,name:'Labial Mate',category:'labios',price:28000,img:'img/product5.jpg'},
+  {id:6,name:'Delineador Negro',category:'ojos',price:20000,img:'img/product6.jpg'}
 ];
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const offers = [1,5,3,2];
 
-function renderProducts() {
-    const container = document.getElementById("products");
-    container.innerHTML = products.map(p => `
-        <div class="product">
-            <img src="${p.img}" alt="${p.name}">
-            <h3>${p.name}</h3>
-            <p>$${p.price.toLocaleString()}</p>
-            <button onclick="addToCart(${p.id})">Agregar al carrito</button>
-        </div>
-    `).join("");
+let cart = JSON.parse(localStorage.getItem('bm_cart')) || [];
+
+function renderProducts(list = products){
+  const container = document.getElementById('products');
+  container.innerHTML = '';
+  list.forEach(p=>{
+    const el = document.createElement('article');
+    el.className = 'product';
+    el.innerHTML = `<img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4><div class="p-meta"><strong>$${p.price.toLocaleString()}</strong><button class="add-btn" data-id="${p.id}">Agregar</button></div>`;
+    container.appendChild(el);
+  });
 }
 
-function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
+function renderOffers(){
+  const row = document.getElementById('offersRow');
+  row.innerHTML = '';
+  offers.forEach(id=>{
+    const p = products.find(x=>x.id===id);
+    const el = document.createElement('div');
+    el.className = 'offer-card';
+    el.innerHTML = `<img src="${p.img}" alt=""><h4>${p.name}</h4><p>$${p.price.toLocaleString()}</p>`;
+    row.appendChild(el);
+  });
+}
+
+function updateCartCount(){ document.getElementById('cartCount').innerText = cart.length; }
+
+document.addEventListener('click', (e)=>{
+  if(e.target.matches('.add-btn')){
+    const id = Number(e.target.dataset.id);
+    const p = products.find(x=>x.id===id);
+    cart.push(p);
+    localStorage.setItem('bm_cart', JSON.stringify(cart));
     updateCartCount();
-    renderCart();
-}
+    alert('Producto agregado al carrito');
+  }
+});
 
-function updateCartCount() {
-    document.getElementById("cart-count").innerText = cart.length;
-}
+// categories
+document.querySelectorAll('#categoryMenu li').forEach(li=>{
+  li.addEventListener('click', ()=>{
+    document.querySelectorAll('#categoryMenu li').forEach(i=>i.classList.remove('active'));
+    li.classList.add('active');
+    const cat = li.dataset.cat;
+    if(cat==='all') renderProducts();
+    else renderProducts(products.filter(p=>p.category===cat));
+  });
+});
 
-function renderCart() {
-    const cartItems = document.getElementById("cart-items");
-    const total = cart.reduce((sum, p) => sum + p.price, 0);
-    cartItems.innerHTML = cart.map(p => `<li>${p.name} - $${p.price.toLocaleString()}</li>`).join("");
-    document.getElementById("cart-total").innerText = total.toLocaleString();
-}
+// search
+document.getElementById('search').addEventListener('input', (e)=>{
+  const q = e.target.value.toLowerCase();
+  renderProducts(products.filter(p=>p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
+});
 
-function toggleCart() {
-    document.getElementById("cart").classList.toggle("show");
-}
+// cart modal behaviour
+const cartBtn = document.getElementById('cartBtn');
+const cartModal = document.getElementById('cartModal');
+const closeCart = document.getElementById('closeCart');
+const cartItems = document.getElementById('cartItems');
+const cartTotal = document.getElementById('cartTotal');
 
-function checkout() {
-    const total = cart.reduce((sum, p) => sum + p.price, 0);
-    const body = cart.map(p => `${p.name} - $${p.price}`).join("%0A") + `%0A%0ATotal: $${total}`;
-    window.location.href = `mailto:bluemakeup22@gmail.com?subject=Pedido%20Blue%20Makeup&body=${body}`;
-}
+cartBtn.addEventListener('click', ()=>{
+  cartItems.innerHTML = '';
+  let total = 0;
+  cart.forEach((it, idx)=>{ total += it.price; cartItems.innerHTML += `<li>${it.name} - $${it.price.toLocaleString()} <button data-idx="${idx}" class="remove">Eliminar</button></li>` });
+  cartTotal.innerText = `$${total.toLocaleString()}`;
+  cartModal.style.display = 'flex';
+});
 
+closeCart.addEventListener('click', ()=> cartModal.style.display = 'none');
+
+document.addEventListener('click', e=>{
+  if(e.target.matches('.remove')){
+    const i = Number(e.target.dataset.idx);
+    cart.splice(i,1);
+    localStorage.setItem('bm_cart', JSON.stringify(cart));
+    updateCartCount();
+    e.target.closest('li').remove();
+  }
+});
+
+// checkout
+document.getElementById('checkout').addEventListener('click', ()=>{
+  if(cart.length===0){ alert('Carrito vacío'); return; }
+  const summary = cart.map(it=>`${it.name} - $${it.price}`).join('%0D%0A');
+  const total = cart.reduce((s,i)=>s+i.price,0);
+  const body = `${summary}%0D%0ATotal: $${total}`;
+  window.location.href = `mailto:bluemakeup22@gmail.com?subject=Pedido%20Blue%20Makeup&body=${body}`;
+});
+
+// init
 renderProducts();
+renderOffers();
 updateCartCount();
-renderCart();
